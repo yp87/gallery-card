@@ -131,4 +131,6 @@ Notes:
 
 ## Credits
 
+Forked from  [TarheelGrad1998/gallery-card:master](https://github.com/TarheelGrad1998/gallery-card) to fix 2024 issues
+
 The files component largely taken from work done by @zsarnett in [the slideshow card](https://github.com/zsarnett/slideshow-card), from which other inspiration was also taken.  
