@@ -1,14 +1,11 @@
-var GalleryCardVersion="3.5.1";
+import {LitElement, html, css} from "lit-element";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import relativeTime from "dayjs/plugin/relativeTime";
 
-var LitElement = LitElement || Object.getPrototypeOf(customElements.get("ha-panel-lovelace"));
-var html = LitElement.prototype.html;
-var css = LitElement.prototype.css;
+const GalleryCard2024Version = "1.0.0";
 
-import "https://unpkg.com/dayjs@1.11.7/dayjs.min.js?module";
-import "https://unpkg.com/dayjs@1.11.7/plugin/customParseFormat.js?module";
-import "https://unpkg.com/dayjs@1.11.7/plugin/relativeTime.js?module";
-
-class GalleryCard extends LitElement {
+class GalleryCard2024 extends LitElement {
   static get properties() {
     return {
       _hass: {},
@@ -19,100 +16,106 @@ class GalleryCard extends LitElement {
     };
   }
 
-  render() {    
+  render() {
     const menuAlignment = (this.config.menu_alignment || "responsive").toLowerCase();
-    
+
     return html`
-        ${this.errors == undefined ? html`` :
+      ${this.errors === undefined ? html`` :
          this.errors.map((error) => {
-          return html`<hui-warning>${error}</hui-warning>`
+          return html`<hui-warning>${error}</hui-warning>`;
          })}
-        <ha-card .header=${this.config.title} class="menu-${menuAlignment}">
-          ${this.currentResourceIndex == undefined || !(this.config.enable_date_search ?? false) ?
+      <ha-card .header=${this.config.title} class="menu-${menuAlignment}">
+        ${this.currentResourceIndex === undefined || !(this.config.enable_date_search ?? false) ?
             html`` : html`<input type="date" class="date-picker" @change="${this._handleDateChange}" value="${this._formatDateForInput(this.selectedDate)}">` }
-          ${this.currentResourceIndex == undefined || !(this.config.show_reload ?? false) ?
-            html`` : html`<ha-progress-button class="btn-reload" @click="${ev => this._loadResources(this._hass)}">Reload</ha-progress-button>` }
-          <div class="resource-viewer" @touchstart="${ev => this._handleTouchStart(ev)}" @touchmove="${ev => this._handleTouchMove(ev)}">
-            <figure style="margin:5px;">
-              ${
+        ${this.currentResourceIndex === undefined || !(this.config.show_reload ?? false) ?
+            html`` : html`<ha-progress-button class="btn-reload" @click="${event => this._loadResources(this._hass)}">Reload</ha-progress-button>` }
+        <div class="resource-viewer" @touchstart="${event => this._handleTouchStart(event)}" @touchmove="${event => this._handleTouchMove(event)}">
+          <figure style="margin:5px;">
+            ${
                 this._currentResource().isHass ?
-                html`<hui-image @click="${ev => this._popupCamera(ev)}"
-                    .hass=${this._hass}
-                    .cameraImage=${this._currentResource().name}
-                    .cameraView=${"live"}
-                  ></hui-image>` :
+                html`
+                  <hui-image @click="${event => this._popupCamera(event)}"
+                                      .hass=${this._hass}
+                                      .cameraImage=${this._currentResource().name}
+                                      .cameraView=${"live"}
+                                    ></hui-image>
+                ` :
                 this._isImageExtension(this._currentResource().extension) ?
-                html`<img @click="${ev => this._popupImage(ev)}" src="${this._currentResource().url}"/>` :
-                html`<video controls ?loop=${this.config.video_loop} ?autoplay=${this.config.video_autoplay} src="${this._currentResource().url}#t=0.1" @loadedmetadata="${ev => this._videoMetadataLoaded(ev)}" @canplay="${ev => this._startVideo(ev)}"  preload="metadata"></video>`
+                html`<img @click="${event => this._popupImage(event)}" src="${this._currentResource().url}"/>` :
+                html`<video controls ?loop=${this.config.video_loop} ?autoplay=${this.config.video_autoplay} src="${this._currentResource().url}#t=0.1" @loadedmetadata="${event => this._videoMetadataLoaded(event)}" @canplay="${event => this._startVideo(event)}"  preload="metadata"></video>`
               }
-              <figcaption>${this._currentResource().caption} 
-                ${this._isImageExtension(this._currentResource().extension) ?
+            <figcaption>${this._currentResource().caption} 
+              ${this._isImageExtension(this._currentResource().extension) ?
                   html`` : html`<span class="duration"></span> ` }                  
-                ${!(this.config.show_zoom ?? false) ?
-                  html`` : html`<a href= "${this._currentResource().url}" target="_blank">Zoom</a>` }                  
-              </figcaption>
-            </figure>  
-            <button class="btn btn-left" @click="${ev => this._selectResource(this.currentResourceIndex-1)}">&lt;</button> 
-            <button class="btn btn-right" @click="${ev => this._selectResource(this.currentResourceIndex+1)}">&gt;</button> 
-          </div>
-          <div class="resource-menu">
-            ${this.resources.map((resource, index) => {
+              ${this.config.show_zoom ? html`<a href= "${this._currentResource().url}" target="_blank">Zoom</a>` : html`` }                  
+            </figcaption>
+          </figure>  
+          <button class="btn btn-left" @click="${event => this._selectResource(this.currentResourceIndex-1)}">&lt;</button> 
+          <button class="btn btn-right" @click="${event => this._selectResource(this.currentResourceIndex+1)}">&gt;</button> 
+        </div>
+        <div class="resource-menu">
+          ${this.resources.map((resource, index) => {
                 return html`
-                    <figure style="margin:5px;" id="resource${index}" data-imageIndex="${index}" @click="${ev => this._selectResource(index)}" class="${(index == this.currentResourceIndex) ? 'selected' : ''}">
-                    ${
+                  <figure style="margin:5px;" id="resource${index}" data-imageIndex="${index}" @click="${event => this._selectResource(index)}" class="${(index === this.currentResourceIndex) ? 'selected' : ''}">
+                  ${
                       resource.isHass ?
-                      html`<hui-image
-                          .hass=${this._hass}
-                          .cameraImage=${resource.name}
-                          .cameraView=${"live"}
-                        ></hui-image>` :
+                      html`
+                        <hui-image
+                                                  .hass=${this._hass}
+                                                  .cameraImage=${resource.name}
+                                                  .cameraView=${"live"}
+                                                ></hui-image>
+                      ` :
                       this._isImageExtension(resource.extension) ?
                       html`<img class="lzy_img" src="/local/community/gallery-card/placeholder.jpg" data-src="${resource.url}"/>` :
                         (this.config.video_preload ?? true) ?
-                        html`<video preload="none" data-src="${resource.url}#t=${(this.config.preview_video_at == null) ? 0.1 : this.config.preview_video_at }" @loadedmetadata="${ev => this._videoMetadataLoaded(ev)}" @canplay="${ev => this._downloadNextMenuVideo()}" preload="metadata"></video>` :
-                          html`<center><div class="lzy_img"><ha-icon id="play" icon="mdi:movie-play-outline"></ha-icon></div></center>`
+                        html`<video preload="none" data-src="${resource.url}#t=${(this.config.preview_video_at === undefined) ? 0.1 : this.config.preview_video_at }" @loadedmetadata="${event => this._videoMetadataLoaded(event)}" @canplay="${event => this._downloadNextMenuVideo()}" preload="metadata"></video>` :
+                          html`<div style="text-align: center"><div class="lzy_img"><ha-icon id="play" icon="mdi:movie-play-outline"></ha-icon></div></div>`
                     }
-                    <figcaption>${resource.caption} <span class="duration"></span></figcaption>
-                    </figure>
+                  <figcaption>${resource.caption} <span class="duration"></span></figcaption>
+                  </figure>
                 `;
             })}
-          </div>
-          <div id="imageModal" class="modal" @touchstart="${ev => this._handleTouchStart(ev)}" @touchmove="${ev => this._handleTouchMove(ev)}">
-            <img class="modal-content" id="popupImage">
-            <div id="popupCaption"></div>
-          </div>
-        </ha-card>
+        </div>
+        <div id="imageModal" class="modal" @touchstart="${event => this._handleTouchStart(event)}" @touchmove="${event => this._handleTouchMove(event)}">
+          <img class="modal-content" id="popupImage">
+          <div id="popupCaption"></div>
+        </div>
+      </ha-card>
     `;
   }
- 
+
   _downloadingVideos = false;
   updated(changedProperties) {
-    const arr = this.shadowRoot.querySelectorAll('img.lzy_img')
-    arr.forEach((v) => {
+    const imageArray = this.shadowRoot.querySelectorAll('img.lzy_img');
+
+    for (const v of imageArray) {
         this.imageObserver.observe(v);
-    })
-    const varr = this.shadowRoot.querySelectorAll('video.lzy_video')
-    varr.forEach((v) => {
+    }
+    const videoArray = this.shadowRoot.querySelectorAll('video.lzy_video');
+
+    for (const v of videoArray) {
         this.imageObserver.observe(v);
-    })
+    }
     // changedProperties.forEach((oldValue, propName) => {
     //   console.log(`${propName} changed. oldValue: ${oldValue}`);
     // });
-    
-    if (!this._downloadingVideos) 
+
+    if (!this._downloadingVideos)
       this._downloadNextMenuVideo();
   }
 
   async _downloadNextMenuVideo() {
     this._downloadingVideos = true;
-    let v = this.shadowRoot.querySelector(".resource-menu figure video[data-src]");
-    
+    const v = this.shadowRoot.querySelector(".resource-menu figure video[data-src]");
+
     if (v)
     {
-      await new Promise(r => setTimeout(r, 100));
-      var src = v.dataset.src;
-      v.removeAttribute("data-src");
-      v.src = src;      
+      await new Promise(resolve => setTimeout(resolve, 100));
+      const source = v.dataset.src;
+
+      delete v.dataset.src;
+      v.src = source;
       v.load();
     }
     else {
@@ -121,17 +124,18 @@ class GalleryCard extends LitElement {
   }
 
   setConfig(config) {
-    dayjs.extend(dayjs_plugin_customParseFormat);
-    dayjs.extend(dayjs_plugin_relativeTime);
+    dayjs.extend(customParseFormat);
+    dayjs.extend(relativeTime);
 
     this.imageObserver = new IntersectionObserver((entries, imgObserver) => {
-        entries.forEach((entry) => {
+        for (const entry of entries) {
             if (entry.isIntersecting) {
-                const lazyImage = entry.target
-                //console.log("lazy loading ", lazyImage)
-                lazyImage.src = lazyImage.dataset.src
+                const lazyImage = entry.target;
+                // console.log("lazy loading ", lazyImage)
+
+                lazyImage.src = lazyImage.dataset.src;
             }
-        })
+        }
     });
     if (!config.entity && !config.entities) {
       throw new Error("Required configuration for entities is missing");
@@ -154,8 +158,8 @@ class GalleryCard extends LitElement {
 
   set hass(hass) {
     this._hass = hass;
-    
-    if (this.resources == null)
+
+    if (this.resources === undefined)
       this._loadResources(this._hass);
   }
 
@@ -163,8 +167,8 @@ class GalleryCard extends LitElement {
     return 1;
   }
 
-  _isImageExtension(ext) {
-    return(ext.match(/(jpeg|jpg|gif|png|tiff|bmp)$/) != null);
+  _isImageExtension(extension) {
+    return(extension.match(/(jpeg|jpg|gif|png|tiff|bmp)$/) !== undefined);
   }
 
   _doSlideShow(firstTime) {
@@ -172,200 +176,206 @@ class GalleryCard extends LitElement {
       this._selectResource(this.currentResourceIndex+1, true);
 
     if (this.config.slideshow_timer) {
-      var time = parseInt(this.config.slideshow_timer);
-      if (!isNaN(time) && time > 0) {
+      const time = Number.parseInt(this.config.slideshow_timer);
+
+      if (!Number.isNaN(time) && time > 0) {
         setTimeout(() => {this._doSlideShow();}, (time * 1000));
       }
     }
   }
 
-  _selectResource(idx, fromSlideshow) {
+  _selectResource(index, fromSlideshow) {
     this.autoPlayVideo = true;
 
-    var nextResourceIdx = idx;
+    let nextResourceIndex = index;
 
-    if (idx < 0)
-      nextResourceIdx = this.resources.length - 1;
-    else if (idx >= this.resources.length)
-      nextResourceIdx = 0;
+    if (index < 0)
+      nextResourceIndex = this.resources.length - 1;
+    else if (index >= this.resources.length)
+      nextResourceIndex = 0;
 
-    this.currentResourceIndex = nextResourceIdx;
+    this.currentResourceIndex = nextResourceIndex;
     this._loadImageForPopup();
 
-    if (fromSlideshow && this.parentNode && this.parentNode.tagName && this.parentNode.tagName.toLowerCase() == "hui-card-preview") {
+    if (fromSlideshow && this.parentNode && this.parentNode.tagName && this.parentNode.tagName.toLowerCase() === "hui-card-preview") {
       return;
     }
 
-    var elt = this.shadowRoot.querySelector("#resource" + this.currentResourceIndex);
+    const elt = this.shadowRoot.querySelector("#resource" + this.currentResourceIndex);
+
     if (elt)
       elt.scrollIntoView({behavior: "smooth", block: "nearest", inline: "nearest"});
   }
 
   _getResource(index) {
-    if (this.resources !== undefined && index !== undefined && this.resources.length > 0) {
-      return this.resources[index];
-    }
-    else {
-      return {
+    return this.resources !== undefined && index !== undefined && this.resources.length > 0 ? this.resources[index] : {
         url: "",
         name: "",
         extension: "jpg",
         caption: index === undefined ? "Loading resources..." : "No images or videos to display",
         index: 0
       };
-    }
   }
 
   _currentResource() {
     return this._getResource(this.currentResourceIndex);
   }
 
-  _startVideo(evt) {
+  _startVideo(event) {
   	if (this.autoPlayVideo)
-  		evt.target.play();
+  		event.target.play();
   }
 
-  _videoMetadataLoaded(evt) {
-    var showDuration = this.config.show_duration ?? true;
-    if (!isNaN(parseInt(evt.target.duration)) && showDuration)
-      evt.target.parentNode.querySelector(".duration").innerHTML = "[" + this._getFormattedVideoDuration(evt.target.duration) + "]";    
+  _videoMetadataLoaded(event) {
+    const showDuration = this.config.show_duration ?? true;
+
+    if (!Number.isNaN(Number.parseInt(event.target.duration)) && showDuration)
+      event.target.parentNode.querySelector(".duration").innerHTML = "[" + this._getFormattedVideoDuration(event.target.duration) + "]";
 
     if (this.config.video_muted)
-      evt.target.muted = "muted";
+      event.target.muted = "muted";
   }
 
-  _popupCamera(evt) {
+  _popupCamera(event_) {
     const event = new Event("hass-more-info", {
       bubbles: true,
       composed: true
     });
+
     event.detail = {entityId: this._currentResource().name};
     this.dispatchEvent(event);
   }
 
-  _popupImage(evt) {
-    var modal = this.shadowRoot.getElementById("imageModal");    
+  _popupImage(event) {
+    const modal = this.shadowRoot.querySelector("#imageModal");
+
     modal.style.display = "block";
     this._loadImageForPopup();
     modal.scrollIntoView(true);
 
-    modal.onclick = function() {
+    modal.addEventListener('click', function() {
       modal.style.display = "none";
-    }
+    });
   }
 
   _loadImageForPopup() {
-    var modal = this.shadowRoot.getElementById("imageModal");
-    var modalImg = this.shadowRoot.getElementById("popupImage");
-    var captionText = this.shadowRoot.getElementById("popupCaption");
+    const modal = this.shadowRoot.querySelector("#imageModal");
+    const modalImg = this.shadowRoot.querySelector("#popupImage");
+    const captionText = this.shadowRoot.querySelector("#popupCaption");
 
-    if (modal.style.display == "block") {
+    if (modal.style.display === "block") {
       modalImg.src = this._currentResource().url;
       captionText.innerHTML = this._currentResource().caption;
     }
   }
 
   _getFormattedVideoDuration(duration) {
-  	var minutes = parseInt(duration / 60);
+  	let minutes = Number.parseInt(duration / 60);
+
     if (minutes < 10)
       minutes = "0" + minutes;
 
-    var seconds = parseInt(duration % 60);
+    let seconds = Number.parseInt(duration % 60);
+
     seconds = "0" + seconds;
-    seconds = seconds.substring(seconds.length - 2);
-    
-    return minutes + ":" + seconds;    
-  }  
-  
-  _keyNavigation(evt) {
-    switch(evt.code) {
+    seconds = seconds.slice(Math.max(0, seconds.length - 2));
+
+    return minutes + ":" + seconds;
+  }
+
+  _keyNavigation(event) {
+    switch(event.code) {
       case "ArrowDown":
-      case "ArrowRight":
+      case "ArrowRight": {
         this._selectResource(this.currentResourceIndex+1);
         break;
+      }
       case "ArrowUp":
-      case "ArrowLeft":
+      case "ArrowLeft": {
         this._selectResource(this.currentResourceIndex-1);
         break;
+      }
       default:
         // null
     }
   }
 
-  _handleTouchStart(evt) {                                         
-      this.xDown = evt.touches[0].clientX;                                      
-      this.yDown = evt.touches[0].clientY;                                      
-  }; 
-  
-  _handleTouchMove(evt) {
+  _handleTouchStart(event) {
+      this.xDown = event.touches[0].clientX;
+      this.yDown = event.touches[0].clientY;
+  }
+
+  _handleTouchMove(event) {
       if ( ! this.xDown || ! this.yDown ) {
           return;
       }
-      var xUp = evt.touches[0].clientX;                                    
-      var yUp = evt.touches[0].clientY;
-      var xDiff = this.xDown - xUp;
-      var yDiff = this.yDown - yUp;
-  
-      if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
+      const xUp = event.touches[0].clientX;
+      const yUp = event.touches[0].clientY;
+      const xDiff = this.xDown - xUp;
+      const yDiff = this.yDown - yUp;
+
+      if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/* most significant */
           if ( xDiff > 0 ) {
-          /* left swipe */ 
+          /* left swipe */
           this._selectResource(this.currentResourceIndex+1);
-          evt.preventDefault();
+          event.preventDefault();
           } else {
           /* right swipe */
           this._selectResource(this.currentResourceIndex-1);
-          evt.preventDefault();
-          }                       
+          event.preventDefault();
+          }
       } else {
-          if ( yDiff > 0 ) {
-          /* up swipe */ 
-          } else { 
+          // if ( yDiff > 0 ) {
+          /* up swipe */
+          // } else {
           /* down swipe */
-          }                                                                 
+          // }
       }
+
       /* reset values */
-      this.xDown = null;
-      this.yDown = null;                                            
-  };
-  
+      this.xDown = undefined;
+      this.yDown = undefined;
+  }
+
   _handleDateChange(event) {
     this.selectedDate = event.target.valueAsDate;
     this._loadResources(this._hass);
-  };
+  }
 
   _loadResources(hass) {
-    var commands = [];
+    const commands = [];
 
     this.currentResourceIndex = undefined;
     this.resources = [];
-    if(this.selectedDate==null)
+    if(this.selectedDate === undefined)
         this.selectedDate = new Date();
 
     const maximumFilesPerEntity = this.config.maximum_files_per_entity ?? true;
     const maximumFiles = maximumFilesPerEntity ? this.config.maximum_files : undefined;
     const maximumFilesTotal = maximumFilesPerEntity ? undefined: this.config.maximum_files;
-    var folderFormat = this.config.folder_format;
-    var fileNameFormat = this.config.file_name_format;
-    var fileNameDateBegins = this.config.file_name_date_begins;
-    var captionFormat = this.config.caption_format;    
+    let folderFormat = this.config.folder_format;
+    let fileNameFormat = this.config.file_name_format;
+    let fileNameDateBegins = this.config.file_name_date_begins;
+    let captionFormat = this.config.caption_format;
     const parsedDateSort = this.config.parsed_date_sort ?? false;
     const reverseSort = this.config.reverse_sort ?? true;
     const randomSort = this.config.random_sort ?? false;
-    var filterForDate = this.config.enable_date_search ?? false;
+    const filterForDate = this.config.enable_date_search ?? false;
 
-    this.config.entities.forEach(entity => {
-      var entityId;
-      var recursive = false;      
-      var includeVideo = true;
-      var includeImages = true;
+    for (const entity of this.config.entities) {
+      let entityId;
+      let recursive = false;
+      let includeVideo = true;
+      let includeImages = true;
+
       if (typeof entity === 'object') {
         entityId = entity.path;
         if (entity.recursive)
           recursive = entity.recursive;
-        if (entity.include_video != undefined)
-          includeVideo = entity.include_video;          
-        if (entity.include_images != undefined)
-          includeImages = entity.include_images;          
+        if (entity.include_video !== undefined)
+          includeVideo = entity.include_video;
+        if (entity.include_images !== undefined)
+          includeImages = entity.include_images;
         if (entity.folder_format)
           folderFormat = entity.folder_format;
         if (entity.file_name_format)
@@ -373,19 +383,19 @@ class GalleryCard extends LitElement {
         if (entity.file_name_date_begins)
           fileNameDateBegins = entity.file_name_date_begins;
         if (entity.caption_format)
-          captionFormat = entity.caption_format;          
+          captionFormat = entity.caption_format;
       }
       else {
         entityId = entity;
       }
 
-      if (entityId.substring(0, 15).toLowerCase() == "media-source://") {
+      if (entityId.slice(0, 15).toLowerCase() === "media-source://") {
         commands.push(this._loadMediaResource(hass, entityId, maximumFiles, folderFormat, fileNameFormat, fileNameDateBegins, captionFormat, recursive, reverseSort, includeVideo, includeImages, filterForDate));
       }
       else {
-        var entityState = hass.states[entityId];
+        const entityState = hass.states[entityId];
 
-        if (entityState == undefined) {
+        if (entityState === undefined) {
           commands.push(Promise.resolve({
             error: true,
             entity: entityId,
@@ -393,24 +403,24 @@ class GalleryCard extends LitElement {
           }));
         }
         else {
-          if (entityState.attributes.entity_picture != undefined)
+          if (entityState.attributes.entity_picture !== undefined)
             commands.push(this._loadCameraResource(entityId, entityState));
 
-          //Custom Files component
-          if (entityState.attributes.fileList != undefined)
+          // Custom Files component
+          if (entityState.attributes.fileList !== undefined)
             commands.push(this._loadFilesResources(entityState.attributes.fileList, maximumFiles, fileNameFormat, fileNameDateBegins, captionFormat, reverseSort));
 
-          //HA Folder component
-          if (entityState.attributes.file_list != undefined)
+          // HA Folder component
+          if (entityState.attributes.file_list !== undefined)
             commands.push(this._loadFilesResources(entityState.attributes.file_list, maximumFiles, fileNameFormat, fileNameDateBegins, captionFormat, reverseSort));
         }
       }
-    });
+    }
 
     Promise.all(commands).then(resources => {
-      this.resources = resources.filter(result => !result.error).flat(Infinity);
+      this.resources = resources.filter(result => !result.error).flat(Number.POSITIVE_INFINITY);
 
-      if (parsedDateSort) {        
+      if (parsedDateSort) {
         if (reverseSort) {
           this.resources.sort(function (x, y) { return y.date - x.date; });
         }
@@ -420,16 +430,17 @@ class GalleryCard extends LitElement {
       }
 
       if (randomSort) {
-        for(var i = this.resources.length - 1; i > 0; i--) {
-          var r = Math.floor(Math.random() * (i + 1) );
-          if(i != r) {
-            [this.resources[i], this.resources[r]] = [this.resources[r], this.resources[i]];
+        for(let index = this.resources.length - 1; index > 0; index--) {
+          const r = Math.floor(Math.random() * (index + 1) );
+
+          if(index !== r) {
+            [this.resources[index], this.resources[r]] = [this.resources[r], this.resources[index]];
           }
         }
       }
 
-      if (maximumFilesTotal != undefined && !isNaN(maximumFilesTotal) && maximumFilesTotal < this.resources.length) {
-        //Keep only N total, but make sure camera resources remain
+      if (maximumFilesTotal !== undefined && !Number.isNaN(maximumFilesTotal) && maximumFilesTotal < this.resources.length) {
+        // Keep only N total, but make sure camera resources remain
         this.resources = this.resources.filter(function(resource) {
           if (resource.isHass)
             return true;
@@ -437,110 +448,111 @@ class GalleryCard extends LitElement {
             this.count++;
             return true;
           }
-          else {
+          
             return false;
-          }
+          
         }, {count: resources.filter(resource => resource.isHass).length});
       }
 
-      this.currentResourceIndex = 0; 
-      if (!(this.parentNode && this.parentNode.tagName && this.parentNode.tagName.toLowerCase() == "hui-card-preview")) {
-        document.addEventListener('keydown',ev=>this._keyNavigation(ev));
+      this.currentResourceIndex = 0;
+      if (!(this.parentNode && this.parentNode.tagName && this.parentNode.tagName.toLowerCase() === "hui-card-preview")) {
+        document.addEventListener('keydown',event=>this._keyNavigation(event));
       }
 
       this.errors = [];
-      resources.filter(result => result.error).flat(Infinity).forEach(error => {
-        this.errors.push(error.message + ' ' + error.entity)
+      for (const error of resources.filter(result => result.error).flat(Number.POSITIVE_INFINITY)) {
+        this.errors.push(error.message + ' ' + error.entity);
         this._hass.callService('system_log', 'write', {
           message: 'Gallery Card Error:  ' + error.message + '   ' + error.entity
         });
-      });
+      }
     });
   }
 
   _loadMediaResource(hass, contentId, maximumFiles, folderFormat, fileNameFormat, fileNameDateBegins, captionFormat, recursive, reverseSort, includeVideo, includeImages, filterForDate) {
-    return new Promise(async (resolve, reject) => {    
-      var mediaPath = contentId;
+    return new Promise( async (resolve, reject) => {
+      let mediaPath = contentId;
+
       try {
-        var values = [];
+        let values = [];
 
-        if (folderFormat && reverseSort && maximumFiles != undefined && !isNaN(maximumFiles)) {  //Can do more targeted folder searching under these conditions
-          var date = dayjs();
-          var folderPrev = "";
-          var failedPaths = [];
+        if (folderFormat && reverseSort && maximumFiles !== undefined && !Number.isNaN(maximumFiles)) {  // Can do more targeted folder searching under these conditions
+          let date = dayjs();
+          let folderPrevious = "";
+          const failedPaths = [];
 
-          while (values.length < maximumFiles) {  
-            var folder = date.format(folderFormat);
+          while (values.length < maximumFiles) {
+            const folder = date.format(folderFormat);
+
             mediaPath = contentId + "/" + folder;
 
-            if (folder != folderPrev) {
+            if (folder !== folderPrevious) {
               try {
-                var folderValues = await this._loadMedia(this, hass, mediaPath, maximumFiles, false, reverseSort, includeVideo, includeImages, filterForDate);
+                const folderValues = await this._loadMedia(this, hass, mediaPath, maximumFiles, false, reverseSort, includeVideo, includeImages, filterForDate);
+
                 values.push(...folderValues);
-              }
-              catch(e) {
-                if (e.code == 'browse_media_failed') 
+              } catch (error) {
+                if (error.code === 'browse_media_failed')
                   failedPaths.push(mediaPath);
                 else
-                  throw e;
-              }              
+                  throw error;
+              }
             }
 
             if (failedPaths.length > 2) {
-              if (values.length == 0) {
-                mediaPath = failedPaths.join();
-                throw {message: 'Failed to browse several folders and found no media files.  Verify your settings are correct.'};
+              if (values.length === 0) {
+                mediaPath = failedPaths.join(',');
+                throw new Error('Failed to browse several folders and found no media files.  Verify your settings are correct.');
               }
               break;
             }
 
-            folderPrev = folder;
-            date = date.subtract(12, 'hour');  //Allows for AM/PM folders
+            folderPrevious = folder;
+            date = date.subtract(12, 'hour');  // Allows for AM/PM folders
           }
 
           if (values.length > maximumFiles)
             values.length = maximumFiles;
-        }
-        else 
-          values = await this._loadMedia(this, hass, mediaPath, maximumFiles, recursive, reverseSort, includeVideo, includeImages, filterForDate);        
-        
-        var resources = [];
-        values.forEach(mediaItem => {
-          var resource = this._createFileResource(mediaItem.authenticated_path, fileNameFormat, fileNameDateBegins, captionFormat);
+        } else
+          values = await this._loadMedia(this, hass, mediaPath, maximumFiles, recursive, reverseSort, includeVideo, includeImages, filterForDate);
+
+        const resources = [];
+
+        for (const mediaItem of values) {
+          const resource = this._createFileResource(mediaItem.authenticated_path, fileNameFormat, fileNameDateBegins, captionFormat);
 
           if (resource !== undefined) {
             resources.push(resource);
           }
-        });   
+        }
         resolve(resources);
-      }     
-      catch(e) {
-        console.log(e);
+      } catch (error) {
+        console.log(error);
         resolve({
           error: true,
           entity: mediaPath,
-          message: e.message
+          message: error.message
         });
       }
-      
+
     });
   }
 
-  _loadMedia(ref, hass, contentId, maximumFiles, recursive, reverseSort, includeVideo, includeImages, filterForDate) {
-    var mediaItem = {
+  _loadMedia(reference, hass, contentId, maximumFiles, recursive, reverseSort, includeVideo, includeImages, filterForDate) {
+    const mediaItem = {
       media_class: "directory",
       media_content_id: contentId
     };
 
-    if (contentId.substring(contentId.length - 1, contentId.length) != "/" && contentId != "media-source://media_source") {
+    if (contentId.slice(- 1, contentId.length) !== "/" && contentId !== "media-source://media_source") {
       mediaItem.media_content_id += "/";
     }
 
-    return Promise.all(this._fetchMedia(ref, hass, mediaItem, recursive, includeVideo, includeImages, filterForDate))
-      .then(function(values) { 
-        var mediaItems = values
-          .flat(Infinity)
-          .filter(function(item) {return item !== undefined})
+    return Promise.all(this._fetchMedia(reference, hass, mediaItem, recursive, includeVideo, includeImages, filterForDate))
+      .then(function(values) {
+        const mediaItems = values
+          .flat(Number.POSITIVE_INFINITY)
+          .filter(function(item) {return item !== undefined;})
           .sort(
             function (a, b) {
               if (a.title > b.title) {
@@ -554,48 +566,52 @@ class GalleryCard extends LitElement {
 
         if (reverseSort)
           mediaItems.reverse();
-          
-        if (maximumFiles != undefined && !isNaN(maximumFiles) && maximumFiles < mediaItems.length) {
+
+        if (maximumFiles !== undefined && !Number.isNaN(maximumFiles) && maximumFiles < mediaItems.length) {
           mediaItems.length = maximumFiles;
-        }        
+        }
 
         return Promise.all(mediaItems.map(function(mediaItem) {
-          return ref._fetchMediaItem(hass, mediaItem.media_content_id)
+          return reference._fetchMediaItem(hass, mediaItem.media_content_id)
             .then(function(auth) {
               return {
                 ...mediaItem,
-                authenticated_path: auth.url 
+                authenticated_path: auth.url
               };
             });
         }));
       });
   }
 
-  _fetchMedia(ref, hass, mediaItem, recursive, includeVideo, includeImages, filterForDate) {
-    var commands = [];
+  _fetchMedia(reference, hass, mediaItem, recursive, includeVideo, includeImages, filterForDate) {
+    const commands = [];
 
-    if (mediaItem.media_class == "directory") {
+    if (mediaItem.media_class === "directory") {
       if (mediaItem.children) {
         commands.push(
           ...mediaItem.children
-          .filter(mediaItem => { 
-            return ((includeVideo && mediaItem.media_class == "video") || (includeImages && mediaItem.media_class == "image") || (recursive && mediaItem.media_class == "directory" && (!filterForDate || (mediaItem.title ==  ref._folderDateFormatter((ref.config.search_date_folder_format == null)?"DD_MM_YYYY":ref.config.search_date_folder_format,ref.selectedDate) ) ))) && mediaItem.title != "@eaDir/";
+          .filter(mediaItem => {
+            return ((includeVideo && mediaItem.media_class === "video") ||
+              (includeImages && mediaItem.media_class === "image") ||
+              (recursive && mediaItem.media_class === "directory" && (!filterForDate ||
+                (mediaItem.title ===  reference._folderDateFormatter((reference.config.search_date_folder_format === undefined) ? "DD_MM_YYYY" : reference.config.search_date_folder_format,reference.selectedDate) ) ))) &&
+              mediaItem.title !== "@eaDir/";
           })
           .map(mediaItem => {
-            return Promise.all(ref._fetchMedia(ref, hass, mediaItem, recursive, includeVideo, includeImages, filterForDate));
+            return Promise.all(reference._fetchMedia(reference, hass, mediaItem, recursive, includeVideo, includeImages, filterForDate));
           }));
       }
       else {
         commands.push(
-          ref._fetchMediaContents(hass, mediaItem.media_content_id)
+          reference._fetchMediaContents(hass, mediaItem.media_content_id)
           .then(mediaItem => {
-            return Promise.all(ref._fetchMedia(ref, hass, mediaItem, recursive, includeVideo, includeImages, filterForDate));
+            return Promise.all(reference._fetchMedia(reference, hass, mediaItem, recursive, includeVideo, includeImages, filterForDate));
           })
         );
       }
     }
 
-    if (mediaItem.media_class != "directory") {
+    if (mediaItem.media_class !== "directory") {
       commands.push(Promise.resolve(mediaItem));
     }
 
@@ -606,91 +622,95 @@ class GalleryCard extends LitElement {
     return hass.callWS({
       type: "media_source/browse_media",
       media_content_id: contentId
-    })
+    });
   }
 
   _fetchMediaItem(hass, mediaItemPath) {
     return hass.callWS({
       type: "media_source/resolve_media",
       media_content_id: mediaItemPath,
-      expires: (60 * 60 * 3)  //3 hours
-    })
+      expires: (60 * 60 * 3)  // 3 hours
+    });
   }
 
   _loadCameraResource(entityId, camera) {
-    var resource = {
+    const resource = {
       url: camera.attributes.entity_picture,
       name: entityId,
       extension: "jpg",
       caption: camera.attributes.friendly_name ?? entityId,
       isHass: true
-    }
-  
+    };
+
     return Promise.resolve(resource);
   }
 
   _loadFilesResources(files, maximumFiles, fileNameFormat, fileNameDateBegins, captionFormat, reverseSort) {
-    var resources = [];
+    const resources = [];
+
     if (files) {
-      files = files.filter(file => file.indexOf("@eaDir") < 0);
+      files = files.filter(file => !file.includes("@eaDir"));
 
       if (reverseSort)
         files.reverse();
 
-      if (maximumFiles != undefined && !isNaN(maximumFiles) && maximumFiles < files.length) {
+      if (maximumFiles !== undefined && !Number.isNaN(maximumFiles) && maximumFiles < files.length) {
         files.length = maximumFiles;
       }
 
-      files.forEach(file => {
-        var filePath = file;
+      for (const file of files) {
+        const filePath = file;
         // /config/downloads/front_door/
         // /config/www/...
-        var fileUrl = filePath.replace("/config/www/", "/local/");
-        if (filePath.indexOf("/config/www/") < 0)
-          fileUrl = "/local/" + filePath.substring(filePath.indexOf("/www/")+5);
+        let fileUrl = filePath.replace("/config/www/", "/local/");
 
-        var resource = this._createFileResource(fileUrl, fileNameFormat, fileNameDateBegins, captionFormat);
-        
+        if (!filePath.includes("/config/www/"))
+          fileUrl = "/local/" + filePath.slice(Math.max(0, filePath.indexOf("/www/")+5));
+
+        const resource = this._createFileResource(fileUrl, fileNameFormat, fileNameDateBegins, captionFormat);
+
         if (resource !== undefined) {
           resources.push(resource);
         }
-      });
+      }
     }
 
     return Promise.resolve(resources);
   }
 
   _createFileResource(fileRawUrl, fileNameFormat, fileNameDateBegins, captionFormat) {
-    var resource;
+    let resource;
 
-    var fileUrl = fileRawUrl.split("?")[0];
-    var arfilePath = fileUrl.split("/");
-    var fileName = arfilePath[arfilePath.length - 1];
-    var date = "";
-    var fileCaption = "";
+    const fileUrl = fileRawUrl.split("?")[0];
+    const arfilePath = fileUrl.split("/");
+    let fileName = arfilePath.at(-1);
+    let date = "";
+    let fileCaption = "";
 
-    if (fileName != '@eaDir') {
-      var arFileName = fileName.split(".");
-      var ext = arFileName[arFileName.length - 1].toLowerCase();
-      fileName = fileName.substring(0, fileName.length - ext.length - 1);
+    if (fileName !== '@eaDir') {
+      const arFileName = fileName.split(".");
+      const extension = arFileName.at(-1).toLowerCase();
+
+      fileName = fileName.slice(0, Math.max(0, fileName.length - extension.length - 1));
       fileName = decodeURIComponent(fileName);
 
-      if (captionFormat != " ")
+      if (captionFormat !== " ")
         fileCaption = fileName;
-      
-      var fileDatePart = fileName;
-      if (fileNameDateBegins && !isNaN(parseInt(fileNameDateBegins)))
-        fileDatePart = fileDatePart.substring(parseInt(fileNameDateBegins) - 1);
+
+      let fileDatePart = fileName;
+
+      if (fileNameDateBegins && !Number.isNaN(Number.parseInt(fileNameDateBegins)))
+        fileDatePart = fileDatePart.slice(Math.max(0, Number.parseInt(fileNameDateBegins) - 1));
       console.log(fileDatePart);
       if (fileNameFormat)
         date = dayjs(fileDatePart, fileNameFormat);
 
       if (date && captionFormat) {
-        if (captionFormat.toUpperCase().trim() == 'AGO')
+        if (captionFormat.toUpperCase().trim() === 'AGO')
           fileCaption = date.fromNow();
         else {
           fileCaption = date.format(captionFormat);
-          fileCaption = fileCaption.replace(/ago/ig, date.fromNow());
+          fileCaption = fileCaption.replaceAll(/ago/gi, date.fromNow());
         }
       }
 
@@ -698,27 +718,28 @@ class GalleryCard extends LitElement {
         url: fileRawUrl,
         base_url: fileUrl,
         name: fileName,
-        extension: ext,
+        extension,
         caption: fileCaption,
         index: -1,
-        date: date
+        date
       };
     }
 
     return resource;
   }
-  
+
   _folderDateFormatter(folderFormat, date ) {
     return dayjs(date).format(folderFormat);
   }
-  
+
   _formatDateForInput(date) {
       const yyyy = date.getFullYear();
       const mm = String(date.getMonth() + 1).padStart(2, '0');
       const dd = String(date.getDate()).padStart(2, '0');
+
       return `${yyyy}-${mm}-${dd}`;
   }
- 
+
 
   static get styles() {
     return css`
@@ -959,16 +980,16 @@ class GalleryCard extends LitElement {
     `;
   }
 }
-customElements.define("gallery-card", GalleryCard);
+customElements.define("gallery-card-2024", GalleryCard2024);
 
-console.groupCollapsed(`%cGALLERY-CARD ${GalleryCardVersion} IS INSTALLED`,"color: green; font-weight: bold");
-console.log("Readme:","https://github.com/TarheelGrad1998/gallery-card");
+console.groupCollapsed(`%cGALLERY-CARD ${GalleryCard2024Version} IS INSTALLED`,"color: green; font-weight: bold");
+console.log("Readme:","https://github.com/lukelalo/gallery-card");
 console.groupEnd();
 
 window.customCards = window.customCards || [];
 window.customCards.push({
-  type: "gallery-card",
-  name: "Gallery Card",
+  type: "gallery-card-2024",
+  name: "Gallery Card 2024",
   preview: false, // Optional - defaults to false
   description: "The Gallery Card allows for viewing multiple images/videos.  Requires the Files sensor availble at https://github.com/TarheelGrad1998" // Optional
 });

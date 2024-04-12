@@ -4,7 +4,7 @@ Custom card for Home Assistant's UI LoveLace which will display images and video
 
 This was developed for use alongside the [component for Kuna cameras](https://github.com/marthoc/kuna) but should work with any images/videos, in theory.
 
-![Screenshot](https://github.com/TarheelGrad1998/GalleryCard/raw/master/screenshot.png)
+![Screenshot](https://github.com/TarheelGrad1998/GalleryCard2024/raw/master/screenshot.png)
 
 ## Images/Video sources
 To display files from a folder, there are now three options when using v3.3+:
@@ -20,9 +20,9 @@ At present, the decision of which to use is up to you, but there are consequence
 
 Now available in HACS, but follow the below to install manually.  For more details, see [Thomas Loven's Install Guide](https://github.com/thomasloven/hass-config/wiki/Lovelace-Plugins)
 
-1.  Place the `gallery-card.js` file under your `/config/www/` folder of Home Assistant (suggest - create a subdirectory for `cards`)
+1.  Place the `gallery-card-2024.js` file under your `/config/www/` folder of Home Assistant (suggest - create a subdirectory for `cards`)
 2.  Add the card within the resources section (Config -> Lovelace Dashboards -> Resources)
-    URL: /local/cards/gallery-card.js
+    URL: /local/cards/gallery-card-2024.js
     Type: Javascript Module
 3.  Add the gallery card to your Lovelace configuration.  The below is an example config:
     ```
