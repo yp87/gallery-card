@@ -1,10 +1,8 @@
 var GalleryCardVersion="3.5.1";
 
-import {
-  LitElement,
-  html,
-  css
-} from "https://unpkg.com/lit-element@2.0.1/lit-element.js?module";
+var LitElement = LitElement || Object.getPrototypeOf(customElements.get("ha-panel-lovelace"));
+var html = LitElement.prototype.html;
+var css = LitElement.prototype.css;
 
 import "https://unpkg.com/dayjs@1.11.7/dayjs.min.js?module";
 import "https://unpkg.com/dayjs@1.11.7/plugin/customParseFormat.js?module";
