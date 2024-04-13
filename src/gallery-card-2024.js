@@ -28,7 +28,7 @@ class GalleryCard2024 extends LitElement {
         ${this.currentResourceIndex === undefined || !(this.config.enable_date_search ?? false) ?
             html`` : html`<input type="date" class="date-picker" @change="${this._handleDateChange}" value="${this._formatDateForInput(this.selectedDate)}">` }
         ${this.currentResourceIndex === undefined || !(this.config.show_reload ?? false) ?
-            html`` : html`<ha-progress-button class="btn-reload" @click="${event => this._loadResources(this._hass)}">Reload</ha-progress-button>` }
+            html`` : html`<ha-progress-button class="btn-reload" @click="${() => this._loadResources(this._hass)}">Reload</ha-progress-button>` }
         <div class="resource-viewer" @touchstart="${event => this._handleTouchStart(event)}" @touchmove="${event => this._handleTouchMove(event)}">
           <figure style="margin:5px;">
             ${
@@ -50,13 +50,13 @@ class GalleryCard2024 extends LitElement {
               ${this.config.show_zoom ? html`<a href= "${this._currentResource().url}" target="_blank">Zoom</a>` : html`` }                  
             </figcaption>
           </figure>  
-          <button class="btn btn-left" @click="${event => this._selectResource(this.currentResourceIndex-1)}">&lt;</button> 
-          <button class="btn btn-right" @click="${event => this._selectResource(this.currentResourceIndex+1)}">&gt;</button> 
+          <button class="btn btn-left" @click="${() => this._selectResource(this.currentResourceIndex-1)}">&lt;</button> 
+          <button class="btn btn-right" @click="${() => this._selectResource(this.currentResourceIndex+1)}">&gt;</button> 
         </div>
         <div class="resource-menu">
           ${this.resources.map((resource, index) => {
                 return html`
-                  <figure style="margin:5px;" id="resource${index}" data-imageIndex="${index}" @click="${event => this._selectResource(index)}" class="${(index === this.currentResourceIndex) ? 'selected' : ''}">
+                  <figure style="margin:5px;" id="resource${index}" data-imageIndex="${index}" @click="${() => this._selectResource(index)}" class="${(index === this.currentResourceIndex) ? 'selected' : ''}">
                   ${
                       resource.isHass ?
                       html`
@@ -69,7 +69,7 @@ class GalleryCard2024 extends LitElement {
                       this._isImageExtension(resource.extension) ?
                       html`<img class="lzy_img" src="/local/community/gallery-card/placeholder.jpg" data-src="${resource.url}"/>` :
                         (this.config.video_preload ?? true) ?
-                        html`<video preload="none" data-src="${resource.url}#t=${(this.config.preview_video_at === undefined) ? 0.1 : this.config.preview_video_at }" @loadedmetadata="${event => this._videoMetadataLoaded(event)}" @canplay="${event => this._downloadNextMenuVideo()}" preload="metadata"></video>` :
+                        html`<video preload="none" data-src="${resource.url}#t=${(this.config.preview_video_at === undefined) ? 0.1 : this.config.preview_video_at }" @loadedmetadata="${event => this._videoMetadataLoaded(event)}" @canplay="${() => this._downloadNextMenuVideo()}" preload="metadata"></video>` :
                           html`<div style="text-align: center"><div class="lzy_img"><ha-icon id="play" icon="mdi:movie-play-outline"></ha-icon></div></div>`
                     }
                   <figcaption>${resource.caption} <span class="duration"></span></figcaption>
@@ -86,7 +86,7 @@ class GalleryCard2024 extends LitElement {
   }
 
   _downloadingVideos = false;
-  updated(changedProperties) {
+  updated() {
     const imageArray = this.shadowRoot.querySelectorAll('img.lzy_img');
 
     for (const v of imageArray) {
@@ -127,7 +127,7 @@ class GalleryCard2024 extends LitElement {
     dayjs.extend(customParseFormat);
     dayjs.extend(relativeTime);
 
-    this.imageObserver = new IntersectionObserver((entries, imgObserver) => {
+    this.imageObserver = new IntersectionObserver((entries) => {
         for (const entry of entries) {
             if (entry.isIntersecting) {
                 const lazyImage = entry.target;
@@ -236,7 +236,7 @@ class GalleryCard2024 extends LitElement {
       event.target.muted = "muted";
   }
 
-  _popupCamera(event_) {
+  _popupCamera() {
     const event = new Event("hass-more-info", {
       bubbles: true,
       composed: true
@@ -246,7 +246,7 @@ class GalleryCard2024 extends LitElement {
     this.dispatchEvent(event);
   }
 
-  _popupImage(event) {
+  _popupImage() {
     const modal = this.shadowRoot.querySelector("#imageModal");
 
     modal.style.display = "block";
@@ -470,7 +470,7 @@ class GalleryCard2024 extends LitElement {
   }
 
   _loadMediaResource(hass, contentId, maximumFiles, folderFormat, fileNameFormat, fileNameDateBegins, captionFormat, recursive, reverseSort, includeVideo, includeImages, filterForDate) {
-    return new Promise( async (resolve, reject) => {
+    return new Promise((resolve) => {
       let mediaPath = contentId;
 
       try {
@@ -488,7 +488,7 @@ class GalleryCard2024 extends LitElement {
 
             if (folder !== folderPrevious) {
               try {
-                const folderValues = await this._loadMedia(this, hass, mediaPath, maximumFiles, false, reverseSort, includeVideo, includeImages, filterForDate);
+                const folderValues = this._loadMedia(this, hass, mediaPath, maximumFiles, false, reverseSort, includeVideo, includeImages, filterForDate);
 
                 values.push(...folderValues);
               } catch (error) {
@@ -514,7 +514,7 @@ class GalleryCard2024 extends LitElement {
           if (values.length > maximumFiles)
             values.length = maximumFiles;
         } else
-          values = await this._loadMedia(this, hass, mediaPath, maximumFiles, recursive, reverseSort, includeVideo, includeImages, filterForDate);
+          values = this._loadMedia(this, hass, mediaPath, maximumFiles, recursive, reverseSort, includeVideo, includeImages, filterForDate);
 
         const resources = [];
 
