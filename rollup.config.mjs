@@ -25,11 +25,15 @@ const plugins = [
   babel({
     exclude: 'node_modules/**',
     babelHelpers: 'bundled',
+    babelrc: false,
   }),
-  cleanup({ comments: 'none' }),
+  //cleanup({ comments: 'none' }),
   dev && serve(serveopts),
   !dev &&
   terser({
+    format: {
+      comments: false,
+    },
     mangle: {
       safari10: true,
     },
