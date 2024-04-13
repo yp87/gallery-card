@@ -4,7 +4,7 @@ Custom card for Home Assistant's UI LoveLace which will display images and video
 
 This was developed for use alongside the [component for Kuna cameras](https://github.com/marthoc/kuna) but should work with any images/videos, in theory.
 
-![Screenshot](https://github.com/TarheelGrad1998/GalleryCard2024/raw/master/screenshot.png)
+![Screenshot](https://github.com/lukelalo/gallery-card/raw/master/screenshot.png)
 
 ## Images/Video sources
 To display files from a folder, there are now three options when using v3.3+:
