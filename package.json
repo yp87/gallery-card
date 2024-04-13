@@ -1,12 +1,12 @@
 {
-  "name": "gallery-card-2024",
+  "name": "gallery-card",
   "version": "1.0.0",
   "description": "Gallery Card 2024 for lovelace",
-  "main": "dist/gallery-card-2024.js",
+  "main": "dist/gallery-card.js",
   "scripts": {
     "build": "npm run lint && npm run rollup",
     "rollup": "rollup -c",
-    "babel": "babel dist/gallery-card-2024.js --out-file dist/gallery-card-2024.js",
+    "babel": "babel dist/gallery-card.js --out-file dist/gallery-card.js",
     "lint": "eslint --fix src/*.js",
     "watch": "rollup -c --watch",
     "postversion": "npm run build",

@@ -3,9 +3,9 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 
-const GalleryCard2024Version = "1.0.0";
+const GalleryCardVersion = "1.0.0";
 
-class GalleryCard2024 extends LitElement {
+class GalleryCard extends LitElement {
   static get properties() {
     return {
       _hass: {},
@@ -980,16 +980,16 @@ class GalleryCard2024 extends LitElement {
     `;
   }
 }
-customElements.define("gallery-card-2024", GalleryCard2024);
+customElements.define("gallery-card", GalleryCard);
 
-console.groupCollapsed(`%cGALLERY-CARD ${GalleryCard2024Version} IS INSTALLED`,"color: green; font-weight: bold");
+console.groupCollapsed(`%cGALLERY-CARD ${GalleryCardVersion} IS INSTALLED`,"color: green; font-weight: bold");
 console.log("Readme:","https://github.com/lukelalo/gallery-card");
 console.groupEnd();
 
 window.customCards = window.customCards || [];
 window.customCards.push({
-  type: "gallery-card-2024",
-  name: "Gallery Card 2024",
+  type: "gallery-card",
+  name: "Gallery Card",
   preview: false, // Optional - defaults to false
   description: "The Gallery Card allows for viewing multiple images/videos.  Requires the Files sensor availble at https://github.com/TarheelGrad1998" // Optional
 });

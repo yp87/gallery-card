@@ -41,7 +41,7 @@ const plugins = [
 
 export default [
   {
-    input: 'src/gallery-card-2024.js',
+    input: 'src/gallery-card.js',
     output: {
       dir: './dist',
       format: 'es',
