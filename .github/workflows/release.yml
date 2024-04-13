@@ -12,9 +12,13 @@ jobs:
       new_release_version: ${{ steps.semantic.outputs.new_release_version }}
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
       - name: Use Node.js 20.x
-        uses: actions/setup-node@v3.6.0
+        uses: actions/setup-node@v3
         with:
           node-version: 20.x
       - name: Cache Node.js modules
@@ -26,7 +30,7 @@ jobs:
             ${{ runner.OS }}-node-20.x
             ${{ runner.OS }}-
       - name: Install dependencies
-        run: npm install --frozen-lockfile
+        run: npm clean-install
       - name: Release
         run: npx semantic-release
         env:
