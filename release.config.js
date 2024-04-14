@@ -33,7 +33,7 @@ module.exports = {
     [
       '@semantic-release/github',
       {
-        assets: 'dist/*.js',
+        assets: ['dist/*.js', '*.jpg'],
       },
     ],
   ],
