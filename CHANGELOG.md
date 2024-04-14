@@ -1,3 +1,10 @@
+## [1.1.0](https://github.com/lukelalo/gallery-card/compare/v1.0.2...v1.1.0) (2024-04-14)
+
+
+### Features
+
+* Try to validate with hacs validation ([58e1402](https://github.com/lukelalo/gallery-card/commit/58e1402c10fc7c15d80598fc5e4c72ecb1b48080))
+
 ## [1.0.2](https://github.com/lukelalo/gallery-card/compare/v1.0.1...v1.0.2) (2024-04-14)
 
 
