@@ -42,7 +42,8 @@ class GalleryCard extends LitElement {
                 ` :
                 this._isImageExtension(this._currentResource().extension) ?
                 html`<img @click="${event => this._popupImage(event)}" src="${this._currentResource().url}"/>` :
-                html`<video controls ?loop=${this.config.video_loop} ?autoplay=${this.config.video_autoplay} src="${this._currentResource().url}#t=0.1" @loadedmetadata="${event => this._videoMetadataLoaded(event)}" @canplay="${event => this._startVideo(event)}"  preload="metadata"></video>`
+                html`<video controls ?loop=${this.config.video_loop} ?autoplay=${this.config.video_autoplay} src="${this._currentResource().url}#t=0.1" @loadedmetadata="${event => this._videoMetadataLoaded(event)}" @canplay="${event => this._startVideo(event)}" 
+                            @ended="${() => this._videoHasEnded()}" preload="metadata"></video>`
               }
             <figcaption>${this._currentResource().caption} 
               ${this._isImageExtension(this._currentResource().extension) ?
@@ -235,6 +236,12 @@ class GalleryCard extends LitElement {
 
     if (this.config.video_muted)
       event.target.muted = "muted";
+  }
+
+  _videoHasEnded() {
+    if (this.config.slideshow_video_end) {
+      this._doSlideShow();
+    }
   }
 
   _popupCamera() {
