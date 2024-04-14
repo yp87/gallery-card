@@ -61,10 +61,10 @@ class GalleryCard extends LitElement {
                       resource.isHass ?
                       html`
                         <hui-image
-                                                  .hass=${this._hass}
-                                                  .cameraImage=${resource.name}
-                                                  .cameraView=${"live"}
-                                                ></hui-image>
+                          .hass=${this._hass}
+                          .cameraImage=${resource.name}
+                          .cameraView=${"live"}
+                        ></hui-image>
                       ` :
                       this._isImageExtension(resource.extension) ?
                       html`<img class="lzy_img" src="/local/community/gallery-card/placeholder.jpg" data-src="${resource.url}"/>` :
@@ -169,7 +169,7 @@ class GalleryCard extends LitElement {
   }
 
   _isImageExtension(extension) {
-    return(extension.match(/(jpeg|jpg|gif|png|tiff|bmp)$/) !== undefined);
+    return(extension.match(/(jpeg|jpg|gif|png|tiff|bmp)$/));
   }
 
   _doSlideShow(firstTime) {
@@ -390,7 +390,7 @@ class GalleryCard extends LitElement {
         entityId = entity;
       }
 
-      if (entityId.slice(0, 15).toLowerCase() === "media-source://") {
+      if (entityId.substring(0, 15).toLowerCase() === "media-source://") {
         commands.push(this._loadMediaResource(hass, entityId, maximumFiles, folderFormat, fileNameFormat, fileNameDateBegins, captionFormat, recursive, reverseSort, includeVideo, includeImages, filterForDate));
       }
       else {
@@ -449,9 +449,7 @@ class GalleryCard extends LitElement {
             this.count++;
             return true;
           }
-          
-            return false;
-          
+          return false;
         }, {count: resources.filter(resource => resource.isHass).length});
       }
 
@@ -546,7 +544,7 @@ class GalleryCard extends LitElement {
       media_content_id: contentId
     };
 
-    if (contentId.slice(- 1, contentId.length) !== "/" && contentId !== "media-source://media_source") {
+    if (contentId.substring(contentId.length - 1, contentId.length) !== "/" && contentId !== "media-source://media_source") {
       mediaItem.media_content_id += "/";
     }
 
@@ -667,7 +665,7 @@ class GalleryCard extends LitElement {
         let fileUrl = filePath.replace("/config/www/", "/local/");
 
         if (!filePath.includes("/config/www/"))
-          fileUrl = "/local/" + filePath.slice(Math.max(0, filePath.indexOf("/www/")+5));
+          fileUrl = "/local/" + filePath.slice(Math.max(0, filePath.indexOf("/www/") + 5));
 
         const resource = this._createFileResource(fileUrl, fileNameFormat, fileNameDateBegins, captionFormat);
 
