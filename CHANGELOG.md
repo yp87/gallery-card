@@ -1,3 +1,10 @@
+## [1.0.2-dev.1](https://github.com/lukelalo/gallery-card/compare/v1.0.1...v1.0.2-dev.1) (2024-04-14)
+
+
+### Bug Fixes
+
+* Added placeholder.jpg as asset ([c49a3ce](https://github.com/lukelalo/gallery-card/commit/c49a3ce0ec9277b5e60f480ced01572a674b6e6a))
+
 ## [1.0.1](https://github.com/lukelalo/gallery-card/compare/v1.0.0...v1.0.1) (2024-04-14)
 
 
