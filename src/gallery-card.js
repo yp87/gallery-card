@@ -86,7 +86,8 @@ class GalleryCard extends LitElement {
   }
 
   _downloadingVideos = false;
-  updated() {
+  // eslint-disable-next-line no-unused-vars
+  updated(changedProperties) {
     const imageArray = this.shadowRoot.querySelectorAll('img.lzy_img');
 
     for (const v of imageArray) {
@@ -470,7 +471,8 @@ class GalleryCard extends LitElement {
   }
 
   _loadMediaResource(hass, contentId, maximumFiles, folderFormat, fileNameFormat, fileNameDateBegins, captionFormat, recursive, reverseSort, includeVideo, includeImages, filterForDate) {
-    return new Promise((resolve) => {
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise(async (resolve) => {
       let mediaPath = contentId;
 
       try {
@@ -488,7 +490,7 @@ class GalleryCard extends LitElement {
 
             if (folder !== folderPrevious) {
               try {
-                const folderValues = this._loadMedia(this, hass, mediaPath, maximumFiles, false, reverseSort, includeVideo, includeImages, filterForDate);
+                const folderValues = await this._loadMedia(this, hass, mediaPath, maximumFiles, false, reverseSort, includeVideo, includeImages, filterForDate);
 
                 values.push(...folderValues);
               } catch (error) {
@@ -514,7 +516,7 @@ class GalleryCard extends LitElement {
           if (values.length > maximumFiles)
             values.length = maximumFiles;
         } else
-          values = this._loadMedia(this, hass, mediaPath, maximumFiles, recursive, reverseSort, includeVideo, includeImages, filterForDate);
+          values = await this._loadMedia(this, hass, mediaPath, maximumFiles, recursive, reverseSort, includeVideo, includeImages, filterForDate);
 
         const resources = [];
 
@@ -991,5 +993,5 @@ window.customCards.push({
   type: "gallery-card",
   name: "Gallery Card",
   preview: false, // Optional - defaults to false
-  description: "The Gallery Card allows for viewing multiple images/videos.  Requires the Files sensor availble at https://github.com/TarheelGrad1998" // Optional
+  description: "The Gallery Card allows for viewing multiple images/videos.  Requires the Files sensor available at https://github.com/TarheelGrad1998" // Optional
 });
