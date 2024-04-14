@@ -1,3 +1,10 @@
+## [1.0.2-dev.2](https://github.com/lukelalo/gallery-card/compare/v1.0.2-dev.1...v1.0.2-dev.2) (2024-04-14)
+
+
+### Bug Fixes
+
+* isImageExtension wasn't matching right ([c36ff00](https://github.com/lukelalo/gallery-card/commit/c36ff00410d265fd65436cdd2478b491c6b97df4))
+
 ## [1.0.2-dev.1](https://github.com/lukelalo/gallery-card/compare/v1.0.1...v1.0.2-dev.1) (2024-04-14)
 
 
