@@ -1,3 +1,10 @@
+## [1.2.0](https://github.com/lukelalo/gallery-card/compare/v1.1.0...v1.2.0) (2024-04-14)
+
+
+### Features
+
+* On slideshows allow to wait for video finish instead of wait an amount of time ([6fd99d5](https://github.com/lukelalo/gallery-card/commit/6fd99d504acac3cb7edeeee30c44fea428336426))
+
 ## [1.1.0](https://github.com/lukelalo/gallery-card/compare/v1.0.2...v1.1.0) (2024-04-14)
 
 
