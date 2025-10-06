@@ -1,30 +1,30 @@
 {
   "name": "gallery-card",
-  "version": "1.2.0",
-  "description": "Gallery Card 2024 for lovelace",
+  "version": "1.2.1",
+  "description": "Gallery Card 2024 yp for lovelace",
   "main": "dist/gallery-card.js",
   "scripts": {
     "build": "npm run lint && npm run rollup",
     "rollup": "rollup -c",
     "babel": "babel dist/gallery-card.js --out-file dist/gallery-card.js",
-    "lint": "eslint --fix src/*.js",
+    "lint": "eslint --fix dist/*.js",
     "watch": "rollup -c --watch",
     "postversion": "npm run build",
     "audit-fix": "npx yarn-audit-fix"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lukelalo/gallery-card.git"
+    "url": "git+https://github.com/yp87/gallery-card.git"
   },
   "keywords": [
     "lovelace"
   ],
-  "author": "lukelalo",
+  "author": "yp87",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lukelalo/gallery-card/issues"
+    "url": "https://github.com/yp87/gallery-card/issues"
   },
-  "homepage": "https://github.com/lukelalo/gallery-card#readme",
+  "homepage": "https://github.com/yp87/gallery-card#readme",
   "devDependencies": {
     "babel-loader": "^9.1.3",
     "@babel/core": "^7.24.4",
