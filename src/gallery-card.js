@@ -56,11 +56,11 @@ class GalleryCard extends LitElement {
         </div>
         <div class="resource-menu">
           ${this.resources
-              .filter(resource => !this._isImageExtension(resource.extension) || !this.resources.find(r => r.fileName == resource.fileName && !this._isImageExtension(r.extension)))
+              .filter(resource => !this._isImageExtension(resource.extension) || !this.resources.find(r => r.name == resource.name && !this._isImageExtension(r.extension)))
               .map((resource, index) => {
                 let thumbnailResource = undefined
                 if (!this._isImageExtension(resource.extension)) {
-                    thumbnailResource = this.resources.find(r => r.fileName == resource.fileName && this._isImageExtension(r.extension))
+                    thumbnailResource = this.resources.find(r => r.name == resource.name && this._isImageExtension(r.extension))
                 }
                 return html`
                   <figure style="margin:5px;" id="resource${index}" data-imageIndex="${index}" @click="${() => this._selectResource(index)}" class="${(index === this.currentResourceIndex) ? 'selected' : ''}">
@@ -203,6 +203,13 @@ class GalleryCard extends LitElement {
       nextResourceIndex = this.resources.length - 1;
     else if (index >= this.resources.length)
       nextResourceIndex = 0;
+
+    if (this._isImageExtension(this.resources[nextResourceIndex].extension) &&
+        this.resources.find(r => r.name == this.resources[nextResourceIndex].name && !this._isImageExtension(r.extension))) {
+      nextResourceIndex = (nextResourceIndex + 1) % this.resources.length;
+      this._selectResource(nextResourceIndex);
+      return;
+    }
 
     this.currentResourceIndex = nextResourceIndex;
     this._loadImageForPopup();
