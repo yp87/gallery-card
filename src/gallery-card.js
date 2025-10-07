@@ -55,7 +55,9 @@ class GalleryCard extends LitElement {
           <button class="btn btn-right" @click="${() => this._selectResource(this.currentResourceIndex+1)}">&gt;</button>
         </div>
         <div class="resource-menu">
-          ${this.resources.map((resource, index) => {
+          ${this.resources
+              .filter(resource => !this._isImageExtension(resource.extension) || !this.resources.find(r => r.fileName == resource.fileName && !this._isImageExtension(r.extension)))
+              .map((resource, index) => {
                 let thumbnailResource = undefined
                 if (!this._isImageExtension(resource.extension)) {
                     thumbnailResource = this.resources.find(r => r.fileName == resource.fileName && this._isImageExtension(r.extension))
@@ -77,7 +79,7 @@ class GalleryCard extends LitElement {
                         html`<video preload="none" data-src="${resource.url}#t=${(this.config.preview_video_at === undefined) ? 0.1 : this.config.preview_video_at }" @loadedmetadata="${event => this._videoMetadataLoaded(event)}" @canplay="${() => this._downloadNextMenuVideo()}" preload="metadata"></video>` :
                           thumbnailResource ?
                           html`<img class="lzy_img" src="/local/community/gallery-card/placeholder.jpg" data-src="${thumbnailResource.url}"/>` :
-                          html`<div style="text-align: center"><div class="lzy_img"><ha-icon id="play" icon="mdi:movie-play-outline"></ha-icon></div></div>`
+                            html`<div style="text-align: center"><div class="lzy_img"><ha-icon id="play" icon="mdi:movie-play-outline"></ha-icon></div></div>`
                     }
                   <figcaption>${resource.caption} <span class="duration"></span></figcaption>
                   </figure>
