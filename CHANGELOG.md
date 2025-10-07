@@ -1,3 +1,10 @@
+## [1.1.5](https://github.com/yp87/gallery-card/compare/v1.1.4...v1.1.5) (2025-10-07)
+
+
+### Bug Fixes
+
+* forgot to use new param ([66e7a1e](https://github.com/yp87/gallery-card/commit/66e7a1ed5a705d7e5aed34171deb01aac77a39e7))
+
 ## [1.1.4](https://github.com/yp87/gallery-card/compare/v1.1.3...v1.1.4) (2025-10-07)
 
 
