@@ -1,3 +1,10 @@
+## [1.1.0](https://github.com/yp87/gallery-card/compare/v1.0.0...v1.1.0) (2025-10-07)
+
+
+### Features
+
+* added thumbnail support without preload ([8b3e4b1](https://github.com/yp87/gallery-card/commit/8b3e4b155204cb68425509b129befd756618c732))
+
 ## 1.0.0 (2025-10-06)
 
 
