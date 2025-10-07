@@ -1,6 +1,6 @@
 {
   "name": "gallery-card",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Gallery Card 2024 yp for lovelace",
   "main": "dist/gallery-card.js",
   "scripts": {

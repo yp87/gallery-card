@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/yp87/gallery-card/compare/v1.1.0...v1.1.1) (2025-10-07)
+
+
+### Bug Fixes
+
+* fix thumbnail ([01a3bcb](https://github.com/yp87/gallery-card/commit/01a3bcbbc534635b49ad7bff68bb4014a059688e))
+
 ## [1.1.0](https://github.com/yp87/gallery-card/compare/v1.0.0...v1.1.0) (2025-10-07)
 
 
