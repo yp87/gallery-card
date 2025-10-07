@@ -51,8 +51,8 @@ class GalleryCard extends LitElement {
               ${this.config.show_zoom ? html`<a href= "${this._currentResource().url}" target="_blank">Zoom</a>` : html`` }
             </figcaption>
           </figure>
-          <button class="btn btn-left" @click="${() => this._selectResource(this.currentResourceIndex-1)}">&lt;</button>
-          <button class="btn btn-right" @click="${() => this._selectResource(this.currentResourceIndex+1)}">&gt;</button>
+          <button class="btn btn-left" @click="${() => this._selectResource(this.currentResourceIndex-1, false)}">&lt;</button>
+          <button class="btn btn-right" @click="${() => this._selectResource(this.currentResourceIndex+1, true)}">&gt;</button>
         </div>
         <div class="resource-menu">
           ${this.resources
@@ -63,7 +63,7 @@ class GalleryCard extends LitElement {
                     thumbnailResource = this.resources.find(r => r.name == resource.name && this._isImageExtension(r.extension))
                 }
                 return html`
-                  <figure style="margin:5px;" id="resource${index}" data-imageIndex="${index}" @click="${() => this._selectResource(index)}" class="${(index === this.currentResourceIndex) ? 'selected' : ''}">
+                  <figure style="margin:5px;" id="resource${index}" data-imageIndex="${index}" @click="${() => this._selectResource(index, true)}" class="${(index === this.currentResourceIndex) ? 'selected' : ''}">
                   ${
                       resource.isHass ?
                       html`
@@ -183,7 +183,7 @@ class GalleryCard extends LitElement {
 
   _doSlideShow(firstTime) {
     if (!firstTime)
-      this._selectResource(this.currentResourceIndex+1, true);
+      this._selectResource(this.currentResourceIndex+1, true, true);
 
     if (this.config.slideshow_timer) {
       const time = Number.parseInt(this.config.slideshow_timer);
@@ -310,12 +310,12 @@ class GalleryCard extends LitElement {
     switch(event.code) {
       case "ArrowDown":
       case "ArrowRight": {
-        this._selectResource(this.currentResourceIndex+1);
+        this._selectResource(this.currentResourceIndex+1, true);
         break;
       }
       case "ArrowUp":
       case "ArrowLeft": {
-        this._selectResource(this.currentResourceIndex-1);
+        this._selectResource(this.currentResourceIndex-1, false);
         break;
       }
       default:
@@ -340,11 +340,11 @@ class GalleryCard extends LitElement {
       if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/* most significant */
           if ( xDiff > 0 ) {
           /* left swipe */
-          this._selectResource(this.currentResourceIndex+1);
+          this._selectResource(this.currentResourceIndex+1, true);
           event.preventDefault();
           } else {
           /* right swipe */
-          this._selectResource(this.currentResourceIndex-1);
+          this._selectResource(this.currentResourceIndex-1, false);
           event.preventDefault();
           }
       } else {
