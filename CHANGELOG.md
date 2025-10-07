@@ -1,3 +1,10 @@
+## [1.1.4](https://github.com/yp87/gallery-card/compare/v1.1.3...v1.1.4) (2025-10-07)
+
+
+### Bug Fixes
+
+* going from first to last ([8fbbf34](https://github.com/yp87/gallery-card/commit/8fbbf3404d19fff0c7fd3d1b911304b7d6cf720e))
+
 ## [1.1.3](https://github.com/yp87/gallery-card/compare/v1.1.2...v1.1.3) (2025-10-07)
 
 
