@@ -194,7 +194,7 @@ class GalleryCard extends LitElement {
     }
   }
 
-  _selectResource(index, fromSlideshow) {
+  _selectResource(index, incremented, fromSlideshow) {
     this.autoPlayVideo = true;
 
     let nextResourceIndex = index;
@@ -206,7 +206,7 @@ class GalleryCard extends LitElement {
 
     if (this._isImageExtension(this.resources[nextResourceIndex].extension) &&
         this.resources.find(r => r.name == this.resources[nextResourceIndex].name && !this._isImageExtension(r.extension))) {
-      nextResourceIndex = (nextResourceIndex + 1) % this.resources.length;
+      nextResourceIndex = incremented ? (nextResourceIndex + 1) % this.resources.length : nextResourceIndex == 0 ? this.resources.length - 1 : nextResourceIndex - 1;
       this._selectResource(nextResourceIndex);
       return;
     }
