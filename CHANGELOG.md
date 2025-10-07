@@ -1,3 +1,10 @@
+## [1.1.6](https://github.com/yp87/gallery-card/compare/v1.1.5...v1.1.6) (2025-10-07)
+
+
+### Bug Fixes
+
+* use params in recursion ([10881a7](https://github.com/yp87/gallery-card/commit/10881a728ed8297b1014f54029052adfa1ae2cec))
+
 ## [1.1.5](https://github.com/yp87/gallery-card/compare/v1.1.4...v1.1.5) (2025-10-07)
 
 
