@@ -207,7 +207,7 @@ class GalleryCard extends LitElement {
     if (this._isImageExtension(this.resources[nextResourceIndex].extension) &&
         this.resources.find(r => r.name == this.resources[nextResourceIndex].name && !this._isImageExtension(r.extension))) {
       nextResourceIndex = incremented ? (nextResourceIndex + 1) % this.resources.length : nextResourceIndex == 0 ? this.resources.length - 1 : nextResourceIndex - 1;
-      this._selectResource(nextResourceIndex);
+      this._selectResource(nextResourceIndex, incremented, fromSlideshow);
       return;
     }
 
