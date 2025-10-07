@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/yp87/gallery-card/compare/v1.1.2...v1.1.3) (2025-10-07)
+
+
+### Bug Fixes
+
+* adapt selectResource to skip thumbnail ([c098c7b](https://github.com/yp87/gallery-card/commit/c098c7bf2b05c571021c8623537504f44f11405e))
+
 ## [1.1.2](https://github.com/yp87/gallery-card/compare/v1.1.1...v1.1.2) (2025-10-07)
 
 
