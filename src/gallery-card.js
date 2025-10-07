@@ -71,7 +71,7 @@ class GalleryCard extends LitElement {
                       html`<img class="lzy_img" src="/local/community/gallery-card/placeholder.jpg" data-src="${resource.url}"/>` :
                         (this.config.video_preload ?? true) ?
                         html`<video preload="none" data-src="${resource.url}#t=${(this.config.preview_video_at === undefined) ? 0.1 : this.config.preview_video_at }" @loadedmetadata="${event => this._videoMetadataLoaded(event)}" @canplay="${() => this._downloadNextMenuVideo()}" preload="metadata"></video>` :
-                          html`<object data="${resource.url.substr(0, file.lastIndexOf('.')) + '.jpg'}" type="image/jpeg"><div style="text-align: center"><div class="lzy_img"><ha-icon id="play" icon="mdi:movie-play-outline"></ha-icon></div></div></object>`
+                          html`<object data="${resource.url.replace('mp4', 'jpg')}" type="image/jpeg"><div style="text-align: center"><div class="lzy_img"><ha-icon id="play" icon="mdi:movie-play-outline"></ha-icon></div></div></object>`
                     }
                   <figcaption>${resource.caption} <span class="duration"></span></figcaption>
                   </figure>
