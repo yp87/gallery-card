@@ -1,6 +1,6 @@
 # Gallery Card
 
-This fork adds thumbnail support. Thumbnails will be used for video files when video_preload is deactivated and an image file is found with the same name as the video file. Image files used as a thumbnail won't be shown by themselves.
+> This fork adds thumbnail support. Thumbnails will be used for video files when video_preload is deactivated and an image file is found with the same name as the video file. Image files used as a thumbnail won't be shown by themselves.
 
 Custom card for Home Assistant's UI LoveLace which will display images and videos in the style of a gallery.  Also supports displaying camera images.
 
