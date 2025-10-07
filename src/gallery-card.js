@@ -42,17 +42,17 @@ class GalleryCard extends LitElement {
                 ` :
                 this._isImageExtension(this._currentResource().extension) ?
                 html`<img @click="${event => this._popupImage(event)}" src="${this._currentResource().url}"/>` :
-                html`<video controls ?loop=${this.config.video_loop} ?autoplay=${this.config.video_autoplay} src="${this._currentResource().url}#t=0.1" @loadedmetadata="${event => this._videoMetadataLoaded(event)}" @canplay="${event => this._startVideo(event)}" 
+                html`<video controls ?loop=${this.config.video_loop} ?autoplay=${this.config.video_autoplay} src="${this._currentResource().url}#t=0.1" @loadedmetadata="${event => this._videoMetadataLoaded(event)}" @canplay="${event => this._startVideo(event)}"
                             @ended="${() => this._videoHasEnded()}" preload="metadata"></video>`
               }
-            <figcaption>${this._currentResource().caption} 
+            <figcaption>${this._currentResource().caption}
               ${this._isImageExtension(this._currentResource().extension) ?
-                  html`` : html`<span class="duration"></span> ` }                  
-              ${this.config.show_zoom ? html`<a href= "${this._currentResource().url}" target="_blank">Zoom</a>` : html`` }                  
+                  html`` : html`<span class="duration"></span> ` }
+              ${this.config.show_zoom ? html`<a href= "${this._currentResource().url}" target="_blank">Zoom</a>` : html`` }
             </figcaption>
-          </figure>  
-          <button class="btn btn-left" @click="${() => this._selectResource(this.currentResourceIndex-1)}">&lt;</button> 
-          <button class="btn btn-right" @click="${() => this._selectResource(this.currentResourceIndex+1)}">&gt;</button> 
+          </figure>
+          <button class="btn btn-left" @click="${() => this._selectResource(this.currentResourceIndex-1)}">&lt;</button>
+          <button class="btn btn-right" @click="${() => this._selectResource(this.currentResourceIndex+1)}">&gt;</button>
         </div>
         <div class="resource-menu">
           ${this.resources.map((resource, index) => {
@@ -71,7 +71,7 @@ class GalleryCard extends LitElement {
                       html`<img class="lzy_img" src="/local/community/gallery-card/placeholder.jpg" data-src="${resource.url}"/>` :
                         (this.config.video_preload ?? true) ?
                         html`<video preload="none" data-src="${resource.url}#t=${(this.config.preview_video_at === undefined) ? 0.1 : this.config.preview_video_at }" @loadedmetadata="${event => this._videoMetadataLoaded(event)}" @canplay="${() => this._downloadNextMenuVideo()}" preload="metadata"></video>` :
-                          html`<div style="text-align: center"><div class="lzy_img"><ha-icon id="play" icon="mdi:movie-play-outline"></ha-icon></div></div>`
+                          html`<object data="${resource.url.substr(0, file.lastIndexOf('.')) + '.jpg'}" type="image/jpeg"><div style="text-align: center"><div class="lzy_img"><ha-icon id="play" icon="mdi:movie-play-outline"></ha-icon></div></div></object>`
                     }
                   <figcaption>${resource.caption} <span class="duration"></span></figcaption>
                   </figure>
@@ -817,7 +817,7 @@ class GalleryCard extends LitElement {
           top: 33%;
         }
         .menu-responsive .resource-menu {
-          width:100%; 
+          width:100%;
           overflow-y: hidden;
           overflow-x: scroll;
           display: flex;
@@ -836,11 +836,11 @@ class GalleryCard extends LitElement {
         .menu-responsive .resource-viewer .btn {
           top: 40%;
         }
-                
+
         .menu-responsive .resource-menu {
-          width:25%; 
+          width:25%;
           height: calc(100vh - 120px);
-          overflow-y: scroll; 
+          overflow-y: scroll;
           float: right;
         }
       }
@@ -851,7 +851,7 @@ class GalleryCard extends LitElement {
         top: 33%;
       }
       .menu-bottom .resource-menu {
-        width:100%; 
+        width:100%;
         overflow-y: hidden;
         overflow-x: scroll;
         display: flex;
@@ -873,11 +873,11 @@ class GalleryCard extends LitElement {
       .menu-right .resource-viewer .btn {
         top: 40%;
       }
-              
+
       .menu-right .resource-menu {
-        width:25%; 
+        width:25%;
         height: calc(100vh - 120px);
-        overflow-y: scroll; 
+        overflow-y: scroll;
         float: right;
       }
       .menu-left .resource-viewer {
@@ -888,11 +888,11 @@ class GalleryCard extends LitElement {
       .menu-left .resource-viewer .btn {
         top: 40%;
       }
-              
+
       .menu-left .resource-menu {
-        width:25%; 
+        width:25%;
         height: calc(100vh - 120px);
-        overflow-y: scroll; 
+        overflow-y: scroll;
         float: left;
       }
       .menu-left .btn-reload {
@@ -911,7 +911,7 @@ class GalleryCard extends LitElement {
         top: 45%;
       }
       .menu-top .resource-menu {
-        width:100%; 
+        width:100%;
         overflow-y: hidden;
         overflow-x: scroll;
         display: flex;
@@ -933,7 +933,7 @@ class GalleryCard extends LitElement {
         top: 33%;
       }
       .menu-hidden .resource-menu {
-        width:100%; 
+        width:100%;
         overflow-y: hidden;
         overflow-x: scroll;
         display: none;
