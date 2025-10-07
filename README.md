@@ -142,22 +142,17 @@ Forked from  [TarheelGrad1998/gallery-card:master](https://github.com/TarheelGra
 
 The files component largely taken from work done by @zsarnett in [the slideshow card](https://github.com/zsarnett/slideshow-card), from which other inspiration was also taken.  
 
-[releases-shield]: https://img.shields.io/github/release/lukelalo/gallery-card.svg
-[releases-link]: https://github.com/lukelalo/gallery-card/releases/latest
-[release-date-shield]: https://img.shields.io/github/release-date/lukelalo/gallery-card
-[latest-download-shield]: https://img.shields.io/github/downloads/lukelalo/gallery-card/latest/total?label=downloads%20latest%20release
-[total-download-shield]: https://img.shields.io/github/downloads/lukelalo/gallery-card/total?label=total%20views
-[traffic-link]: https://github.com/lukelalo/gallery-card/graphs/traffic
+[releases-shield]: https://img.shields.io/github/release/yp87/gallery-card.svg
+[releases-link]: https://github.com/yp87/gallery-card/releases/latest
+[release-date-shield]: https://img.shields.io/github/release-date/yp87/gallery-card
+[latest-download-shield]: https://img.shields.io/github/downloads/yp87/gallery-card/latest/total?label=downloads%20latest%20release
+[total-download-shield]: https://img.shields.io/github/downloads/yp87/gallery-card/total?label=total%20views
+[traffic-link]: https://github.com/yp87/gallery-card/graphs/traffic
 [hacs-shield]: https://img.shields.io/badge/HACS-Default-orange.svg
 [hacs-link]: https://github.com/custom-components/hacs
 [home-assistant-shield]: https://img.shields.io/badge/Home%20Assistant-visual%20editor/yaml-green
 [home-assistant-link]: https://www.home-assistant.io/
 [license-shield]: https://img.shields.io/github/license/custom-cards/boilerplate-card.svg
 [license-link]: LICENSE
-[activity-shield]: https://img.shields.io/github/commit-activity/y/lukelalo/gallery-card.svg
-[activity-link]: https://github.com/lukelalo/gallery-card/commits/master
-[bugs-shield]: https://img.shields.io/github/issues/lukelalo/gallery-card/bug?color=red&label=bugs
-[bugs-link]: https://github.com/lukelalo/gallery-card/labels/bug
-[enhancements-shield]: https://img.shields.io/github/issues/lukelalo/gallery-card/enhancement?color=blue&label=enhancements
-[enhancement-link]: https://github.com/lukelalo/gallery-card/labels/enhancement
-[maintenance-shield]: https://img.shields.io/maintenance/yes/2024.svg
+[activity-shield]: https://img.shields.io/github/commit-activity/y/yp87/gallery-card.svg
+[activity-link]: https://github.com/yp87/gallery-card/commits/master

@@ -1,3 +1,10 @@
+## [1.2.0-dev.1](https://github.com/yp87/gallery-card/compare/v1.1.6...v1.2.0-dev.1) (2025-10-07)
+
+
+### Features
+
+* update readme ([c6f3846](https://github.com/yp87/gallery-card/commit/c6f38468289166abaf949332e5b2010f68025ad6))
+
 ## [1.1.6](https://github.com/yp87/gallery-card/compare/v1.1.5...v1.1.6) (2025-10-07)
 
 
