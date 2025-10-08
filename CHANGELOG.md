@@ -1,16 +1,9 @@
-## [1.2.0-dev.3](https://github.com/yp87/gallery-card/compare/v1.2.0-dev.2...v1.2.0-dev.3) (2025-10-08)
+## [1.2.0](https://github.com/yp87/gallery-card/compare/v1.1.6...v1.2.0) (2025-10-07)
 
 
-### Bug Fixes
+### Features
 
-* fix indexes ([972ab8b](https://github.com/yp87/gallery-card/commit/972ab8b5cc86b567d9b90e03becd7a58055c5c30))
-
-## [1.2.0-dev.2](https://github.com/yp87/gallery-card/compare/v1.2.0-dev.1...v1.2.0-dev.2) (2025-10-08)
-
-
-### Bug Fixes
-
-* wrong selection ([db34119](https://github.com/yp87/gallery-card/commit/db34119ce5b72be8db71d84ebcf6e1defcafcd13))
+* update readme ([c6f3846](https://github.com/yp87/gallery-card/commit/c6f38468289166abaf949332e5b2010f68025ad6))
 
 ## [1.2.0-dev.1](https://github.com/yp87/gallery-card/compare/v1.1.6...v1.2.0-dev.1) (2025-10-07)
 

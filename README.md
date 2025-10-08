@@ -1,12 +1,14 @@
 # Gallery Card
 
+> This fork adds thumbnail support. Thumbnails will be used for video files when video_preload is deactivated and an image file is found with the same name as the video file. Image files used as a thumbnail won't be shown by themselves.
+
 Custom card for Home Assistant's UI LoveLace which will display images and videos in the style of a gallery.  Also supports displaying camera images.
 
 This was developed for use alongside the [component for Kuna cameras](https://github.com/marthoc/kuna) but should work with any images/videos, in theory.
 
 [![GitHub Release][releases-shield]][releases-link] [![GitHub Release Date][release-date-shield]][releases-link] [![GitHub Releases][latest-download-shield]][traffic-link] [![GitHub Releases][total-download-shield]][traffic-link]
 [![HACS Badge][hacs-shield]][hacs-link] [![HomeAssistant][home-assistant-shield]][home-assistant-link] [![License][license-shield]][license-link]
-![Project Maintenance][maintenance-shield] [![GitHub Activity][activity-shield]][activity-link] [![Open bugs][bugs-shield]][bugs-link] [![Open enhancements][enhancements-shield]][enhancement-link]
+[![GitHub Activity][activity-shield]][activity-link]
 
 
 ![Screenshot](https://github.com/lukelalo/gallery-card/raw/master/screenshot.png)
