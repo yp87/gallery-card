@@ -204,12 +204,11 @@ class GalleryCard extends LitElement {
     else if (index >= this.resources.length)
       nextResourceIndex = 0;
 
-    if (this._isImageExtension(this.resources[nextResourceIndex].extension) &&
+    /*if (this._isImageExtension(this.resources[nextResourceIndex].extension) &&
         this.resources.find(r => r.name == this.resources[nextResourceIndex].name && !this._isImageExtension(r.extension))) {
-      nextResourceIndex = incremented ? (nextResourceIndex + 1) % this.resources.length : nextResourceIndex == 0 ? this.resources.length - 1 : nextResourceIndex - 1;
-      this._selectResource(nextResourceIndex, incremented, fromSlideshow);
+      this._selectResource(incremented ? nextResourceIndex + 1 : nextResourceIndex - 1, incremented, fromSlideshow);
       return;
-    }
+    }*/
 
     this.currentResourceIndex = nextResourceIndex;
     this._loadImageForPopup();
