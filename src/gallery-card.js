@@ -55,8 +55,7 @@ class GalleryCard extends LitElement {
           <button class="btn btn-right" @click="${() => this._selectResource(this.currentResourceIndex+1, true)}">&gt;</button>
         </div>
         <div class="resource-menu">
-          ${this.resources
-              .filter(resource => !this._isImageExtension(resource.extension) || !this.resources.find(r => r.name == resource.name && !this._isImageExtension(r.extension)))
+          ${this._thumbnailFilteredResources()
               .map((resource, index) => {
                 let thumbnailResource = undefined
                 if (!this._isImageExtension(resource.extension)) {
@@ -195,20 +194,16 @@ class GalleryCard extends LitElement {
   }
 
   _selectResource(index, incremented, fromSlideshow) {
+    let filteredResources = this._thumbnailFilteredResources();
+
     this.autoPlayVideo = true;
 
     let nextResourceIndex = index;
 
     if (index < 0)
-      nextResourceIndex = this.resources.length - 1;
-    else if (index >= this.resources.length)
+      nextResourceIndex = filteredResources.length - 1;
+    else if (index >= filteredResources.length)
       nextResourceIndex = 0;
-
-    /*if (this._isImageExtension(this.resources[nextResourceIndex].extension) &&
-        this.resources.find(r => r.name == this.resources[nextResourceIndex].name && !this._isImageExtension(r.extension))) {
-      this._selectResource(incremented ? nextResourceIndex + 1 : nextResourceIndex - 1, incremented, fromSlideshow);
-      return;
-    }*/
 
     this.currentResourceIndex = nextResourceIndex;
     this._loadImageForPopup();
@@ -224,7 +219,8 @@ class GalleryCard extends LitElement {
   }
 
   _getResource(index) {
-    return this.resources !== undefined && index !== undefined && this.resources.length > 0 ? this.resources[index] : {
+    let filteredResources = this._thumbnailFilteredResources();
+    return filteredResources !== undefined && index !== undefined && filteredResources.length > 0 ? filteredResources[index] : {
         url: "",
         name: "",
         extension: "jpg",
@@ -235,6 +231,10 @@ class GalleryCard extends LitElement {
 
   _currentResource() {
     return this._getResource(this.currentResourceIndex);
+  }
+
+  _thumbnailFilteredResources() {
+    return this.video_preload ? this.resources : this.resources?.filter(resource => !this._isImageExtension(resource.extension) || !this.resources.find(r => r.name == resource.name && !this._isImageExtension(r.extension)));
   }
 
   _startVideo(event) {
