@@ -1,3 +1,11 @@
+## [1.2.1](https://github.com/yp87/gallery-card/compare/v1.2.0...v1.2.1) (2025-10-08)
+
+
+### Bug Fixes
+
+* fix indexes ([972ab8b](https://github.com/yp87/gallery-card/commit/972ab8b5cc86b567d9b90e03becd7a58055c5c30))
+* wrong selection ([db34119](https://github.com/yp87/gallery-card/commit/db34119ce5b72be8db71d84ebcf6e1defcafcd13))
+
 ## [1.2.0](https://github.com/yp87/gallery-card/compare/v1.1.6...v1.2.0) (2025-10-07)
 
 
